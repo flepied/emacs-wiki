@@ -1755,7 +1755,7 @@ affect the match data results."
 (defun emacs-wiki-use-font-lock ()
   (set (make-local-variable 'font-lock-multiline) 'undecided)
   (set (make-local-variable 'font-lock-defaults)
-       `(nil t nil nil 'beginning-of-line
+       `(nil t nil nil nil ;(function beginning-of-line)
          (font-lock-fontify-buffer-function . emacs-wiki-highlight-buffer)
          (font-lock-fontify-region-function . emacs-wiki-highlight-region)
          (font-lock-unfontify-region-function
