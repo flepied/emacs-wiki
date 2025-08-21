@@ -226,7 +226,7 @@ project to switch to."
   :group 'emacs-wiki)
 
 (defcustom emacs-wiki-ignored-extensions-regexp
-  "\\.\\(bz2\\|gz\\|[Zz]\\)\\'"
+  "\\.\\(bz2\\|gz\\|[Zz]\\|gpg\\)\\'"
   "A regexp of extensions to omit from the ending of Wiki page name."
   :type 'string
   :group 'emacs-wiki)
@@ -1083,14 +1083,20 @@ Call after creating a page."
   (select-window (caadr event))
   (emacs-wiki-follow-name-at-mouse event t))
 
+(defun emacs-wiki-rename-file (old new)
+  "Rename a file using vc if under version control or the usual way"
+  (if (vc-backend old)
+      (vc-rename-file old new)
+      (rename-file old new)))
+
 (defun emacs-wiki-rename-link-file (link-name new-name)
   (when (emacs-wiki-wiki-url-p link-name)
     (error "Can't rename a URL"))
   (let* ((base (emacs-wiki-wiki-base link-name))
          (file (emacs-wiki-page-file base t)))
     (if (null file)
-        (rename-file base new-name)
-      (rename-file file new-name))))
+        (emacs-wiki-rename-file base new-name)
+      (emacs-wiki-rename-file file new-name))))
 
 (defun emacs-wiki-rename-link (old-link new-name)
   ;; strangely, save-excursion does not work here
