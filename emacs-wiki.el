@@ -974,11 +974,11 @@ This makes the bad link face in the linking buffer go away."
                 (funcall find-file-function file)))
         (when tag
           (goto-char (point-min))
-          (unless (re-search-forward (concat "^\\.?#" tag) nil t)
+          (unless (re-search-forward (concat "\\.?\\^" tag) nil t)
             (when (string-match
                    (concat emacs-wiki-bare-digits-anchor-prefix "\\(.+\\)")
                    tag)
-              (re-search-forward (concat "^\\.?#" (match-string 1 tag)
+              (re-search-forward (concat "\\.?\\^" (match-string 1 tag)
                                          "\\>")))))
         (when refresh-buffer
           (with-current-buffer newbuf
@@ -2349,7 +2349,7 @@ that verbatim is processed long before table is even seen."
    ["^\\(\\*+\\)\\s-+" 0 emacs-wiki-markup-heading]
 
    ;; define anchor points
-   ["^#\\(\\S-+\\)\\s-*" 0 emacs-wiki-markup-anchor]
+   ["^\\^\\(\\S-+\\)\\s-*" 0 emacs-wiki-markup-anchor]
 
    ;; horizontal rule, or section separator
    ["^----+" 0 "<hr />"]
@@ -2576,7 +2576,7 @@ Tables
 
 Anchors and tagged links
 
-  #example If you begin a line with \"#anchor\" -- where anchor
+  ^example If you begin a line with \"^anchor\" -- where anchor
   can be any word that doesn't contain whitespace -- it defines an
   anchor at that point into the document.  This anchor text is not
   displayed.
@@ -2642,7 +2642,7 @@ InterWiki names
   There are times when you will want to constantly reference pages on
   another website.  Rather than repeating the URL ad nauseum, you can
   define an InterWiki name.  This is a set of WikiNames to URL
-  correlations, that support textual substitution using #anchor names
+  correlations, that support textual substitution using ^anchor names
   (which are appended to the URL).  For example, MeatballWiki is
   defined in the variable `emacs-wiki-interwiki-names'.  It means you
   can reference the page \"MeatBall\" on MeatballWiki using this
